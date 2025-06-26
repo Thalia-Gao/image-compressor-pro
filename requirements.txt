@@ -1,0 +1,6 @@
+# 后端依赖
+fastapi
+uvicorn
+pillow
+python-multipart
+# （如有其它Python依赖可补充） 
