@@ -1,0 +1,22 @@
+services:
+  # 后端API服务
+  - type: web
+    name: image-compressor-api
+    env: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.16
+
+  # 前端静态网站
+  - type: web
+    name: image-compressor-frontend
+    env: static
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://image-compressor-api.onrender.com 

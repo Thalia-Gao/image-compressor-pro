@@ -5,6 +5,9 @@ import './app.css';
 
 const { Title, Text } = Typography;
 
+// 获取API地址，支持开发和生产环境
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 function formatSize(size) {
   if (size < 1024) return size + ' B';
   if (size < 1024 * 1024) return (size / 1024).toFixed(1) + ' KB';
@@ -41,15 +44,21 @@ const App = () => {
     formData.append('file', file);
     formData.append('ratio', ratio);
     try {
-      const res = await fetch('http://localhost:8000/compress', {
+      const res = await fetch(`${API_BASE_URL}/compress`, {
         method: 'POST',
         body: formData,
       });
       const data = await res.json();
-      setCompressedUrl('data:image/jpeg;base64,' + data.image);
-      setCompressedSize(data.size);
+      if (data.error) {
+        message.error(data.error);
+      } else {
+        setCompressedUrl('data:image/jpeg;base64,' + data.image);
+        setCompressedSize(data.size);
+        message.success('图片压缩成功！');
+      }
     } catch (e) {
-      message.error('压缩失败，请检查后端服务！');
+      message.error('压缩失败，请检查网络连接或后端服务！');
+      console.error('压缩错误:', e);
     }
     setLoading(false);
   };
@@ -112,6 +121,13 @@ const App = () => {
                 <img src={compressedUrl} alt="压缩图" className="preview-img" />
                 <div style={{ marginTop: 8 }}>
                   <Text type="secondary">文件大小：{formatSize(compressedSize)}</Text>
+                  {originSize > 0 && (
+                    <div>
+                      <Text type="secondary">
+                        压缩率：{((1 - compressedSize / originSize) * 100).toFixed(1)}%
+                      </Text>
+                    </div>
+                  )}
                 </div>
                 <Button
                   icon={<DownloadOutlined />}
