@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Upload, Button, Slider, Card, Row, Col, Typography, message } from 'antd';
 import { UploadOutlined, DownloadOutlined } from '@ant-design/icons';
-import './app.css';
+import './App.css';
 
 const { Title, Text } = Typography;
 
@@ -148,4 +148,3 @@ const App = () => {
 };
 
 export default App;
- 
