@@ -5,8 +5,8 @@ import './App.css';
 
 const { Title, Text } = Typography;
 
-// 获取API地址，支持开发和生产环境
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// 获取API地址，直接写死为后端服务地址
+const API_BASE_URL = 'https://image-compressor-api-bgpd.onrender.com';
 
 function formatSize(size) {
   if (size < 1024) return size + ' B';
@@ -148,3 +148,4 @@ const App = () => {
 };
 
 export default App;
+ 
